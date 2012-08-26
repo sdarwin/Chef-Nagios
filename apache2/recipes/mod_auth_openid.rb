@@ -20,7 +20,7 @@
 openid_dev_pkgs = value_for_platform(
   ["ubuntu","debian"] => { "default" => %w{ g++ apache2-prefork-dev libopkele-dev libopkele3 } },
   ["centos","redhat","scientific","fedora","amazon"] => {
-    #"default" => %w{ gcc-c++ httpd-devel curl-devel libtidy libtidy-devel sqlite-devel pcre-devel openssl-devel make }
+    " < 6.0" => %w{ gcc-c++ httpd-devel curl-devel libtidy libtidy-devel sqlite-devel pcre-devel openssl-devel make },
     "default" => %w{ gcc-c++ httpd-devel libcurl libcurl-devel libtidy libtidy-devel sqlite-devel pcre-devel openssl-devel make }
   },
   "arch" => { "default" => ["libopkele"] },

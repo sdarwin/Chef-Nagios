@@ -20,8 +20,9 @@
 #
 
 pkg = value_for_platform(
-   # [ "centos", "redhat", "fedora" ] => {"default" => "php53-ldap"}, 
-    [ "centos", "redhat", "fedora" ] => {"default" => "php-ldap"}, 
+    [ "centos", "redhat", "fedora" ] =>
+ 	{"< 6.0" => "php53-ldap",
+	"default" => "php-ldap"}, 
     "default" => "php5-ldap"
   )
 
