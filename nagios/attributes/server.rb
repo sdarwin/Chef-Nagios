@@ -30,23 +30,58 @@ when "ubuntu","debian"
   set['nagios']['server']['service_name']   = 'nagios3'
   set['nagios']['server']['mail_command']   = '/usr/bin/mail'
 when "redhat","centos","fedora","scientific"
+  case node['platform_version']
+  when "< 6.0"
+
+  #OLD REDHAT
   set['nagios']['server']['install_method'] = 'source'
+
+  set['nagios']['home']       = "/usr/lib/nagios3"
+  set['nagios']['conf_dir']   = "/etc/nagios3"
+  set['nagios']['config_dir'] = "/etc/nagios3/conf.d"
+  set['nagios']['log_dir']    = "/var/log/nagios3"
+  set['nagios']['cache_dir']  = "/var/cache/nagios3"
+  set['nagios']['state_dir']  = "/var/lib/nagios3"
+  set['nagios']['run_dir']    = "/var/run/nagios3"
+  set['nagios']['docroot']    = "/usr/share/nagios3/htdocs"
+
+  else
+
+  #NEW REDHAT
+  set['nagios']['server']['install_method'] = 'package'
+
+  set['nagios']['home']       = "/usr/lib/nagios"
+  set['nagios']['conf_dir']   = "/etc/nagios"
+  set['nagios']['config_dir'] = "/etc/nagios/conf.d"
+  set['nagios']['log_dir']    = "/var/log/nagios"
+  set['nagios']['cache_dir']  = "/var/cache/nagios"
+  set['nagios']['state_dir']  = "/var/lib/nagios"
+  set['nagios']['run_dir']    = "/var/run/nagios"
+  set['nagios']['docroot']    = "/usr/share/nagios/htdocs"
+
+  end
+
   set['nagios']['server']['service_name']   = 'nagios'
   set['nagios']['server']['mail_command']   = '/bin/mail'
+
 else
+ 
+  #DEBIAN 
   set['nagios']['server']['install_method'] = 'source'
   set['nagios']['server']['service_name']   = 'nagios'
   set['nagios']['server']['mail_command']   = '/bin/mail'
+
+  set['nagios']['home']       = "/usr/lib/nagios3"
+  set['nagios']['conf_dir']   = "/etc/nagios3"
+  set['nagios']['config_dir'] = "/etc/nagios3/conf.d"
+  set['nagios']['log_dir']    = "/var/log/nagios3"
+  set['nagios']['cache_dir']  = "/var/cache/nagios3"
+  set['nagios']['state_dir']  = "/var/lib/nagios3"
+  set['nagios']['run_dir']    = "/var/run/nagios3"
+  set['nagios']['docroot']    = "/usr/share/nagios3/htdocs"
+
 end
 
-set['nagios']['home']       = "/usr/lib/nagios3"
-set['nagios']['conf_dir']   = "/etc/nagios3"
-set['nagios']['config_dir'] = "/etc/nagios3/conf.d"
-set['nagios']['log_dir']    = "/var/log/nagios3"
-set['nagios']['cache_dir']  = "/var/cache/nagios3"
-set['nagios']['state_dir']  = "/var/lib/nagios3"
-set['nagios']['run_dir']    = "/var/run/nagios3"
-set['nagios']['docroot']    = "/usr/share/nagios3/htdocs"
 set['nagios']['enable_ssl'] = false
 set['nagios']['http_port']  = node['nagios']['enable_ssl'] ? "443" : "80"
 set['nagios']['server_name'] = node.has_key?(:domain) ? "nagios.#{domain}" : "nagios"

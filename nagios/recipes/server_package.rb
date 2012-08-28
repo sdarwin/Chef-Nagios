@@ -18,10 +18,88 @@
 # limitations under the License.
 #
 
-%w{ 
-  nagios3
-  nagios-nrpe-plugin
-  nagios-images
-}.each do |pkg|
-  package pkg
+case node['platform']
+when "redhat","centos","fedora","scientific"
+  template "/etc/yum.repos.d/epel.repo" do
+    source "epel.repo.erb"
+    mode 0644
+    owner "root"
+    group "root"
+  end
 end
+
+pkgs = value_for_platform(
+   [ "centos", "redhat", "fedora" ] => {
+        "default" => %w{ nagios nagios-plugins-nrpe }
+        },
+  [ "debian", "ubuntu" ] => {
+    "default" => %w{ nagios3 nagios-nrpe-plugin nagios-images }
+  },
+  "default" => %w{ nagios3 nagios-nrpe-plugin nagios-images }
+)
+
+pkgs.each do |pkg|
+  package pkg do
+    action :install
+  end
+end
+
+#2012, notice that dir is missing
+case node['platform']
+when "redhat","centos","fedora","scientific"
+
+ directory "/var/lib/nagios/spool" do
+   path "#{node['nagios']['state_dir']}/spool"
+   owner "root"
+   group "root"
+   mode "0755"
+   action :create
+ end
+
+ directory "/var/lib/nagios/spool/checkresults" do
+   path "#{node['nagios']['state_dir']}/spool/checkresults"
+   owner "nagios"
+   group "nagios"
+   mode "0775"
+   action :create
+ end
+
+ file "/etc/nagios/conf.d/internet.cfg" do
+   path "#{node['nagios']['config_dir']}/internet.cfg"
+   action :delete
+ end
+
+ directory "/var/cache/nagios" do
+   path "#{node['nagios']['cache_dir']}"
+   owner "nagios"
+   group "nagios"
+   mode "0755"
+   action :create
+ end
+
+file "/etc/nagios/resource.cfg" do
+   path "#{node['nagios']['conf_dir']}/resource.cfg"
+   owner "nagios"
+   group "nagios"
+   mode "0660"
+   action :create
+ end
+
+ directory "/var/run/nagios" do
+   path "#{node['nagios']['run_dir']}"
+   owner "nagios"
+   group "nagios"
+   mode "0755"
+   action :create
+ end
+
+end
+
+#%w{ 
+#  nagios3
+#  nagios-nrpe-plugin
+#  nagios-images
+#}.each do |pkg|
+#  package pkg
+#end
+

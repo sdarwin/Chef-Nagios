@@ -23,7 +23,7 @@ command_check_interval=-1
 
 command_file=<%= node['nagios']['state_dir'] %>/rw/nagios.cmd
 external_command_buffer_slots=4096
-lock_file=<%= node['nagios']['run_dir'] %>/nagios3.pid
+lock_file=<%= node['nagios']['run_dir'] %>/<%= node['nagios']['server']['service_name'] %>.pid
 temp_file=<%= node['nagios']['cache_dir'] %>/nagios.tmp
 temp_path=/tmp
 event_broker_options=-1

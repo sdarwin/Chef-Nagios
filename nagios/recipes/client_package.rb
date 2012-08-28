@@ -18,11 +18,38 @@
 # limitations under the License.
 #
 
-%w{
-  nagios-nrpe-server
-  nagios-plugins
-  nagios-plugins-basic
-  nagios-plugins-standard
-}.each do |pkg|
-  package pkg
+case node['platform']
+when "redhat","centos","fedora","scientific" 
+  template "/etc/yum.repos.d/epel.repo" do
+    source "epel.repo.erb"
+    mode 0644
+    owner "root"
+    group "root"
+  end
 end
+
+pkgs = value_for_platform(
+   [ "centos", "redhat", "fedora" ] => {
+        "default" => %w{ nrpe nagios-plugins nagios-plugins-all }
+        },
+  [ "debian", "ubuntu" ] => {
+    "default" => %w{ nagios-nrpe-server nagios-plugins nagios-plugins-basic nagios-plugins-standard }
+  },
+  "default" => %w{ nagios-nrpe-server nagios-plugins nagios-plugins-basic nagios-plugins-standard }
+)
+
+pkgs.each do |pkg|
+  package pkg do
+    action :install
+  end
+end
+
+#%w{
+#  nagios-nrpe-server
+#  nagios-plugins
+#  nagios-plugins-basic
+#  nagios-plugins-standard
+#}.each do |pkg|
+#  package pkg
+#end
+

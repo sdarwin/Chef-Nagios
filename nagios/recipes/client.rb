@@ -64,7 +64,19 @@ template "#{node['nagios']['nrpe']['conf_dir']}/nrpe.cfg" do
   notifies :restart, "service[nagios-nrpe-server]"
 end
 
+case node['platform']
+when "redhat","centos","fedora","scientific"
+  if node[:platform_version].to_f < 6.0
+        nrpe_name = "nagios-nrpe-server"
+  else
+        nrpe_name = "nrpe"
+  end
+else
+  nrpe_name = "nagios-nrpe-server"
+end
+
 service "nagios-nrpe-server" do
+  service_name nrpe_name
   action [:start, :enable]
   supports :restart => true, :reload => true
 end
