@@ -29,12 +29,25 @@ when "ubuntu","debian"
   set['nagios']['server']['install_method'] = 'package'
   set['nagios']['server']['service_name']   = 'nagios3'
   set['nagios']['server']['mail_command']   = '/usr/bin/mail'
+  set['nagios']['server']['p1_file']   = '/usr/lib/nagios3/p1.pl'
+
+  set['nagios']['home']       = "/usr/lib/nagios3"
+  set['nagios']['conf_dir']   = "/etc/nagios3"
+  set['nagios']['config_dir'] = "/etc/nagios3/conf.d"
+  set['nagios']['log_dir']    = "/var/log/nagios3"
+  set['nagios']['cache_dir']  = "/var/cache/nagios3"
+  set['nagios']['state_dir']  = "/var/lib/nagios3"
+  set['nagios']['run_dir']    = "/var/run/nagios3"
+  set['nagios']['docroot']    = "/usr/share/nagios3/htdocs"
+
+
 when "redhat","centos","fedora","scientific"
   case node['platform_version']
   when "< 6.0"
 
   #OLD REDHAT
   set['nagios']['server']['install_method'] = 'source'
+  set['nagios']['server']['p1_file']   = '/usr/lib/nagios3/p1.pl'
 
   set['nagios']['home']       = "/usr/lib/nagios3"
   set['nagios']['conf_dir']   = "/etc/nagios3"
@@ -49,6 +62,7 @@ when "redhat","centos","fedora","scientific"
 
   #NEW REDHAT
   set['nagios']['server']['install_method'] = 'package'
+  set['nagios']['server']['p1_file']   = '/usr/sbin/p1.pl'
 
   set['nagios']['home']       = "/usr/lib/nagios"
   set['nagios']['conf_dir']   = "/etc/nagios"
@@ -70,6 +84,7 @@ else
   set['nagios']['server']['install_method'] = 'source'
   set['nagios']['server']['service_name']   = 'nagios'
   set['nagios']['server']['mail_command']   = '/bin/mail'
+  set['nagios']['server']['p1_file']   = '/usr/lib/nagios3/p1.pl'
 
   set['nagios']['home']       = "/usr/lib/nagios3"
   set['nagios']['conf_dir']   = "/etc/nagios3"
