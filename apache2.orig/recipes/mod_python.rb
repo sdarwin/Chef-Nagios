@@ -1,11 +1,8 @@
 #
-# Author:: Joshua Timberman <joshua@opscode.com>
-# Author:: Joshua Sierles <joshua@37signals.com>
-# Cookbook Name:: nagios
-# Recipe:: default
+# Cookbook Name:: apache2
+# Recipe:: python 
 #
-# Copyright 2008-2009, Opscode, Inc
-# Copyright 2009, 37signals
+# Copyright 2008-2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,14 +17,16 @@
 # limitations under the License.
 #
 
-if node['platform_family'] == "debian"
-  execute "apt-get update" do
-#      action :nothing
-      not_if do
-        ::File.exists?('/var/lib/apt/periodic/update-success-stamp') &&
-        ::File.mtime('/var/lib/apt/periodic/update-success-stamp') > Time.now - 86400*2
-      end
-  end
+case node['platform']
+  when "debian", "ubuntu"
+    package "libapache2-mod-python" do
+      action :install
+    end
+  when "redhat", "centos", "scientific", "fedora", "amazon"
+    package "mod_python" do
+      action :install
+      notifies :run, resources(:execute => "generate-module-list"), :immediately
+    end
 end
 
-include_recipe "nagios::client"
+apache_module "python"

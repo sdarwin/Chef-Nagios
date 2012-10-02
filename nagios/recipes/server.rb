@@ -21,9 +21,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+if node['platform_family'] == "debian"
+  execute "apt-get update" do
+#      action :nothing
+      not_if do
+        ::File.exists?('/var/lib/apt/periodic/update-success-stamp') &&
+        ::File.mtime('/var/lib/apt/periodic/update-success-stamp') > Time.now - 86400*2
+      end
+  end
+end
+
 include_recipe "apache2"
-include_recipe "apache2::mod_ssl"
-include_recipe "apache2::mod_rewrite"
+#include_recipe "apache2::mod_ssl"
+#include_recipe "apache2::mod_rewrite"
 include_recipe "nagios::client"
 
 sysadmins = search(:users, 'groups:sysadmin')
@@ -115,8 +125,10 @@ else
   end
 end
 
+if node['platform_family'] == "debian"
 apache_site "000-default" do
   enable false
+end
 end
 
 directory "#{node['nagios']['conf_dir']}/certificates" do
@@ -136,6 +148,7 @@ bash "Create SSL Certificates" do
   not_if { ::File.exists?("#{node['nagios']['conf_dir']}/certificates/nagios-server.pem") }
 end
 
+if node['platform_family'] == "debian"
 template "#{node['apache']['dir']}/sites-available/nagios3.conf" do
   source "apache2.conf.erb"
   mode 0644
@@ -146,6 +159,8 @@ template "#{node['apache']['dir']}/sites-available/nagios3.conf" do
 end
 
 apache_site "nagios3.conf"
+
+end
 
 %w{ nagios cgi }.each do |conf|
   nagios_conf conf do

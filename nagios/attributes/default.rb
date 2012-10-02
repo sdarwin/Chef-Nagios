@@ -21,4 +21,8 @@
 default['nagios']['user'] = "nagios"
 default['nagios']['group'] = "nagios"
 
-set['nagios']['plugin_dir'] = "/usr/lib/nagios/plugins"
+if node['platform_family'] == "debian"
+set['nagios']['plugin_dir'] =  "/usr/lib/nagios/plugins"
+else 
+set['nagios']['plugin_dir'] = node['kernel']['machine'] =~ /^i[36']86$/ ? "/usr/lib/nagios/plugins" : "/usr/lib64/nagios/plugins"
+end

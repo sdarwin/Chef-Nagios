@@ -22,11 +22,23 @@
 # limitations under the License.
 #
 
+if node['platform_family'] == "debian"
+  execute "apt-get update" do
+#      action :nothing
+      not_if do
+        ::File.exists?('/var/lib/apt/periodic/update-success-stamp') &&
+        ::File.mtime('/var/lib/apt/periodic/update-success-stamp') > Time.now - 86400*2
+      end
+  end
+end
+
 mon_host = ['127.0.0.1']
 
+#S.D. slight logic change here, add other mon hosts to server also
 if node.run_list.roles.include?(node['nagios']['server_role'])
   mon_host << node['ipaddress']
-elsif node['nagios']['multi_environment_monitoring']
+end
+if node['nagios']['multi_environment_monitoring']
   search(:node, "role:#{node['nagios']['server_role']}") do |n|
    mon_host << n['ipaddress']
   end
