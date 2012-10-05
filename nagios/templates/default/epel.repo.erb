@@ -1,7 +1,12 @@
 [epel]
-name=Extra Packages for Enterprise Linux 6 - $basearch
-#baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
+name=Extra Packages for Enterprise Linux - $basearch
+#for 5 and 6 right now
+<% if node['platform_version'] < "6.0" -%>
+mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=epel-5&arch=$basearch
+<% else -%>
 mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
+<% end -%>
+
 failovermethod=priority
 enabled=1
 gpgcheck=0

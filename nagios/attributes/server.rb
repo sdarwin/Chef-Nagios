@@ -24,6 +24,20 @@
 
 default['nagios']['pagerduty_key'] = ""
 
+case platform
+when "redhat","centos","scientific","fedora","suse","amazon"
+  set['apache']['user']    = "apache"
+when "debian","ubuntu"
+  set['apache']['user']    = "www-data"
+  set['apache']['dir']     = "/etc/apache2"
+when "arch"
+  set['apache']['user']    = "http"
+when "freebsd"
+  set['apache']['user']    = "www"
+else
+  set['apache']['user']    = "www-data"
+end
+
 case node['platform']
 when "ubuntu","debian"
   set['nagios']['server']['install_method'] = 'package'
@@ -42,8 +56,7 @@ when "ubuntu","debian"
 
 
 when "redhat","centos","fedora","scientific"
-  case node['platform_version']
-  when "< 6.0"
+  if node['platform_version'].to_f < 6.0
 
   #OLD REDHAT
   set['nagios']['server']['install_method'] = 'source'
@@ -57,7 +70,8 @@ when "redhat","centos","fedora","scientific"
   set['nagios']['state_dir']  = "/var/lib/nagios3"
   set['nagios']['run_dir']    = "/var/run/nagios3"
   set['nagios']['docroot']    = "/usr/share/nagios3/htdocs"
-
+  set['nagios']['server']['service_name']   = 'nagios'
+  set['nagios']['server']['nagurl']   = 'nagios3'
   else
 
   #NEW REDHAT
@@ -72,17 +86,17 @@ when "redhat","centos","fedora","scientific"
   set['nagios']['state_dir']  = "/var/lib/nagios"
   set['nagios']['run_dir']    = "/var/run/nagios"
   set['nagios']['docroot']    = "/usr/share/nagios/htdocs"
+  set['nagios']['server']['service_name']   = 'nagios'
 
   end
 
-  set['nagios']['server']['service_name']   = 'nagios'
   set['nagios']['server']['mail_command']   = '/bin/mail'
 
 else
  
   #DEBIAN 
   set['nagios']['server']['install_method'] = 'source'
-  set['nagios']['server']['service_name']   = 'nagios'
+  set['nagios']['server']['service_name']   = 'nagios3'
   set['nagios']['server']['mail_command']   = '/bin/mail'
   set['nagios']['server']['p1_file']   = '/usr/lib/nagios3/p1.pl'
 

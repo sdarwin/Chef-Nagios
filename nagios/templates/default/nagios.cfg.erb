@@ -11,11 +11,12 @@ cfg_dir=<%= node['nagios']['config_dir'] %>
 object_cache_file=<%= node['nagios']['cache_dir'] %>/objects.cache
 precached_object_file=<%= node['nagios']['cache_dir'] %>/objects.precache
 
-<% if node['platform_family'] == "debian" -%>
-resource_file=<%= node['nagios']['conf_dir'] %>/resource.cfg
-<% else -%>
+<% if node['platform_family'] == "rhel" && node['platform_version'].to_f >= 6.0 -%>
 resource_file=<%= node['nagios']['conf_dir'] %>/private/resource.cfg
+<% else -%>
+resource_file=<%= node['nagios']['conf_dir'] %>/resource.cfg
 <% end -%>
+
 status_file=<%= node['nagios']['cache_dir'] %>/status.dat
 status_update_interval=10
 nagios_user=<%= node['nagios']['user'] %>

@@ -27,12 +27,12 @@ when "ubuntu","debian"
   set['nagios']['client']['install_method'] = 'package'
   set['nagios']['nrpe']['pidfile'] = '/var/run/nagios/nrpe.pid'
 when "redhat","centos","fedora","scientific"
-  case node['platform_version']
-  when "< 6.0"
-  set['nagios']['client']['install_method'] = 'source'
-  else
+#  case node['platform_version']
+#  when "< 6.0"
+#  set['nagios']['client']['install_method'] = 'source'
+#  else
   set['nagios']['client']['install_method'] = 'package'
-  end
+#  end
 
   set['nagios']['nrpe']['pidfile'] = '/var/run/nrpe.pid'
 else

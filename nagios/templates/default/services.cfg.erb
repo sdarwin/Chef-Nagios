@@ -70,6 +70,14 @@ define service {
     use                 default-service
 }
 
+define service {
+    service_description mysql
+    hostgroup_name      db
+    check_command       check_mysql
+    use                 default-service
+}
+
+
 <% unless @service_hosts['monitoring'].nil? -%>
 # If the monitoring host is a postfix relay, uncomment this.
 #define service {
@@ -113,6 +121,7 @@ define service {
     check_command       check_http_port_expect!8080!"HTTP/1.1 302 Found"
     use                 default-service
 }
+
 
 <% end -%>
 <% unless @service_hosts['database_master'].nil? -%>

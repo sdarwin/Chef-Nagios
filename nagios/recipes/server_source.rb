@@ -22,13 +22,14 @@
 
 include_recipe "build-essential"
 include_recipe "apache2"
-include_recipe "nagios::client_source"
+#this is called from another place
+#include_recipe "nagios::client_source"
 include_recipe "php"
 include_recipe "php::module_gd"
 
 pkgs = value_for_platform(
     ["redhat","centos","fedora","scientific"] =>
-        {"default" => %w{ openssl-devel gd-devel }},
+        {"default" => %w{ openssl-devel gd-devel nagios-plugins-nrpe }},
     [ "debian", "ubuntu" ] =>
         {"default" => %w{ libssl-dev libgd2-xpm-dev }},
     "default" => %w{ libssl-dev libgd2-xpm-dev }
@@ -90,9 +91,16 @@ bash "compile-nagios" do
     make install-webconf
   EOH
   creates "/usr/sbin/nagios"
+  notifies :reload, "service[apache2]"
 end
 
-directory "#{node['nagios']['conf_dir']}/conf.d" do
+directory "#{node['nagios']['conf_dir']}" do
+  owner "root"
+  group "root"
+  mode "0755"
+end
+
+directory "#{node['nagios']['config_dir']}" do
   owner "root"
   group "root"
   mode "0755"
@@ -114,11 +122,18 @@ directory "/usr/lib/nagios3" do
   mode "0755"
 end
 
+file "/var/lib/nagios3/rw/nagios.cmd" do
+  path "#{node['nagios']['state_dir']}/rw/nagios.cmd"
+  owner node['nagios']['user']
+  mode "0755"
+end
+
 link "#{node['nagios']['conf_dir']}/stylesheets" do
   to "#{node['nagios']['docroot']}/stylesheets"
 end
 
-apache_module "cgi" do
-  enable :true
-end
+#S.D. 2012, what is this?
+#apache_module "cgi" do
+#  enable :true
+#end
 

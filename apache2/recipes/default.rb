@@ -11,6 +11,16 @@ package "apache2" do
   action :install
 end
 
+if node['platform_family'] == "debian" then
+execute "/usr/sbin/a2enmod rewrite" do
+creates "/etc/apache2/mods-enabled rewrite.load"
+end
+
+execute "/usr/sbin/a2enmod ssl" do
+creates "/etc/apache2/mods-enabled ssl.load"
+end
+end
+
 service "apache2" do
   case node['platform']
   when "redhat","centos","scientific","fedora","suse","amazon"

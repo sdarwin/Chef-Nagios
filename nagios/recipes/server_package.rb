@@ -48,10 +48,18 @@ end
 case node['platform']
 when "redhat","centos","fedora","scientific"
 
+ directory "/var/lib/nagios" do
+   path "#{node['nagios']['state_dir']}"
+   owner "nagios"
+   group "nagios"
+   mode "0755"
+   action :create
+ end
+
  directory "/var/lib/nagios/spool" do
    path "#{node['nagios']['state_dir']}/spool"
-   owner "root"
-   group "root"
+   owner "nagios"
+   group "nagios"
    mode "0755"
    action :create
  end

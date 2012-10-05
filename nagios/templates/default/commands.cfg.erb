@@ -210,7 +210,7 @@ define command {
 # 'check_mysql' check mysql connectivity
 define command {
 	command_name	check_mysql
-	command_line	$USER1$/check_mysql -H $ARG1$ -u nagios -p $ARG2$
+	command_line	$USER1$/check_mysql -H $HOSTADDRESS$ -u nagios -p password
 }
 
 define command {

@@ -40,11 +40,11 @@ if node.run_list.roles.include?(node['nagios']['server_role'])
 end
 if node['nagios']['multi_environment_monitoring']
   search(:node, "role:#{node['nagios']['server_role']}") do |n|
-   mon_host << n['ipaddress']
+   mon_host << n['ipaddress'] unless mon_host.include?(n['ipaddress'])
   end
 else
   search(:node, "role:#{node['nagios']['server_role']} AND chef_environment:#{node.chef_environment}") do |n|
-    mon_host << n['ipaddress']
+    mon_host << n['ipaddress'] unless mon_host.include?(n['ipaddress'])
   end
 end
 
@@ -78,11 +78,15 @@ end
 
 case node['platform']
 when "redhat","centos","fedora","scientific"
-  if node[:platform_version].to_f < 6.0
-        nrpe_name = "nagios-nrpe-server"
-  else
-        nrpe_name = "nrpe"
-  end
+#2012 S.D. , not the case with RH 5???
+#  if node[:platform_version].to_f < 6.0
+#        nrpe_name = "nagios-nrpe-server"
+#  else
+#        nrpe_name = "nrpe"
+#  end
+
+   nrpe_name = "nrpe"
+
 else
   nrpe_name = "nagios-nrpe-server"
 end
@@ -114,4 +118,6 @@ nagios_nrpecheck "check_users" do
   warning_condition "20"
   critical_condition "30"
   action :add
+  notifies :restart, "service[nagios-nrpe-server]"
 end
+
