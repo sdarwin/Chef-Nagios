@@ -22,7 +22,7 @@
 # limitations under the License.
 
 if node['platform_family'] == "debian"
-if node['platform_version'] >= 12
+if node['platform_version'].to_f >= 12
   execute "apt-get update" do
       not_if do
         ::File.exists?('/var/lib/apt/periodic/update-success-stamp') &&
