@@ -20,14 +20,4 @@
 # limitations under the License.
 #
 
-if node['platform_family'] == "debian"
-  execute "apt-get update" do
-#      action :nothing
-      not_if do
-        ::File.exists?('/var/lib/apt/periodic/update-success-stamp') &&
-        ::File.mtime('/var/lib/apt/periodic/update-success-stamp') > Time.now - 86400*2
-      end
-  end
-end
-
 include_recipe "nagios::client"

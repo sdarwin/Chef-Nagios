@@ -22,11 +22,19 @@
 # limitations under the License.
 
 if node['platform_family'] == "debian"
+if node['platform_version'] >= 12
   execute "apt-get update" do
-#      action :nothing
       not_if do
         ::File.exists?('/var/lib/apt/periodic/update-success-stamp') &&
         ::File.mtime('/var/lib/apt/periodic/update-success-stamp') > Time.now - 86400*2
+      end
+  end
+else
+  execute "apt-get update" do
+      command "touch /tmp/apt-get-update ; /usr/bin/apt-get update"
+      not_if do
+        ::File.exists?('/tmp/apt-get-update') &&
+        ::File.mtime('/tmp/apt-get-update') > Time.now - 86400*2
       end
   end
 end
