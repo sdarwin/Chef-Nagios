@@ -39,6 +39,7 @@ else
       end
   end
 end
+end
 
 mon_host = ['127.0.0.1']
 
