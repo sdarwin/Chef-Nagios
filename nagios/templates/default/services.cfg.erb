@@ -70,12 +70,12 @@ define service {
     use                 default-service
 }
 
-define service {
-    service_description mysql
-    hostgroup_name      db
-    check_command       check_mysql
-    use                 default-service
-}
+#define service {
+#    service_description mysql
+#    hostgroup_name      db
+#    check_command       check_mysql
+#    use                 default-service
+#}
 
 
 <% unless @service_hosts['monitoring'].nil? -%>
