@@ -27,7 +27,7 @@ if node['platform_version'].to_f >= 12
   execute "apt-get update" do
       not_if do
         ::File.exists?('/var/lib/apt/periodic/update-success-stamp') &&
-        ::File.mtime('/var/lib/apt/periodic/update-success-stamp') > Time.now - 86400*2
+        ::File.mtime('/var/lib/apt/periodic/update-success-stamp') > Time.now - 86400*7
       end
   end
 else
@@ -35,7 +35,7 @@ else
       command "touch /tmp/apt-get-update ; /usr/bin/apt-get update"
       not_if do
         ::File.exists?('/tmp/apt-get-update') &&
-        ::File.mtime('/tmp/apt-get-update') > Time.now - 86400*2
+        ::File.mtime('/tmp/apt-get-update') > Time.now - 86400*7
       end
   end
 end
