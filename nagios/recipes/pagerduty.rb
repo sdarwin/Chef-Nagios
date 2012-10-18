@@ -19,7 +19,7 @@
 
 package "libwww-perl" do
   case node[:platform]
-  when "redhat","centos","scientific","fedora","suse"
+  when "redhat","centos","scientific","fedora","suse","amazon"
     package_name "perl-libwww-perl"
   when "debian","ubuntu"
     package_name "libwww-perl"
@@ -31,7 +31,7 @@ end
 
 package "libcrypt-ssleay-perl" do
   case node[:platform]
-  when "redhat","centos","scientific","fedora","suse"
+  when "redhat","centos","scientific","fedora","suse","amazon"
     package_name "perl-Crypt-SSLeay"
   when "debian","ubuntu"
     package_name "libcrypt-ssleay-perl"

@@ -86,7 +86,7 @@ template "#{node['nagios']['nrpe']['conf_dir']}/nrpe.cfg" do
 end
 
 case node['platform']
-when "redhat","centos","fedora","scientific"
+when "redhat","centos","fedora","scientific","amazon"
 #2012 S.D. , not the case with RH 5???
 #  if node[:platform_version].to_f < 6.0
 #        nrpe_name = "nagios-nrpe-server"

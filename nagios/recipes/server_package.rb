@@ -19,7 +19,7 @@
 #
 
 case node['platform']
-when "redhat","centos","fedora","scientific"
+when "redhat","centos","fedora","scientific","amazon"
   template "/etc/yum.repos.d/epel.repo" do
     source "epel.repo.erb"
     mode 0644
@@ -29,7 +29,7 @@ when "redhat","centos","fedora","scientific"
 end
 
 pkgs = value_for_platform(
-   [ "centos", "redhat", "fedora" ] => {
+   [ "centos", "redhat", "fedora","scientific","amazon" ] => {
         "default" => %w{ nagios nagios-plugins-nrpe }
         },
   [ "debian", "ubuntu" ] => {
@@ -46,7 +46,7 @@ end
 
 #2012, notice that dir is missing
 case node['platform']
-when "redhat","centos","fedora","scientific"
+when "redhat","centos","fedora","scientific","amazon"
 
  directory "/var/lib/nagios" do
    path "#{node['nagios']['state_dir']}"

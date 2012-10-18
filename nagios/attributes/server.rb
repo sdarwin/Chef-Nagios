@@ -54,8 +54,8 @@ when "ubuntu","debian"
   set['nagios']['run_dir']    = "/var/run/nagios3"
   set['nagios']['docroot']    = "/usr/share/nagios3/htdocs"
 
-
-when "redhat","centos","fedora","scientific"
+#need to test with amazon
+when "redhat","centos","fedora","scientific","amazon"
   if node['platform_version'].to_f < 6.0
 
   #OLD REDHAT
