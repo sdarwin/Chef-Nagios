@@ -9,6 +9,7 @@
   ScriptAlias /cgi-bin/<%= node['nagios']['server']['service_name'] %> /usr/lib/cgi-bin/<%= node['nagios']['server']['service_name'] %>
   ScriptAlias /<%= node['nagios']['server']['service_name'] %>/cgi-bin /usr/lib/cgi-bin/<%= node['nagios']['server']['service_name'] %>
 
+  Alias /stylesheets /etc/<%= node['nagios']['server']['service_name'] %>/stylesheets
   Alias /<%= node['nagios']['server']['service_name'] %>/stylesheets /etc/<%= node['nagios']['server']['service_name'] %>/stylesheets
   Alias /<%= node['nagios']['server']['service_name'] %> <%= node['nagios']['docroot'] %>
 
