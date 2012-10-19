@@ -9,14 +9,22 @@ package "apache2" do
   package_name "apache22"
   end
   action :install
+  notifies :run, "execute[a2enmod-rewrite]"
+  notifies :run, "execute[a2enmod-ssl]"
 end
 
-if node['platform_family'] == "debian" then
-execute "/usr/sbin/a2enmod rewrite" do
+#all this code with "notifies" has not been tested.  we don't want these actions to run until the package has been installed
+execute "a2enmod-rewrite" do
+command "/usr/sbin/a2enmod rewrite" 
+action :nothing
+only_if node['platform_family'] == "debian"
 creates "/etc/apache2/mods-enabled rewrite.load"
 end
 
-execute "/usr/sbin/a2enmod ssl" do
+execute "a2enmod-ssl" do
+command "/usr/sbin/a2enmod ssl" 
+action :nothing
+only_if node['platform_family'] == "debian"
 creates "/etc/apache2/mods-enabled ssl.load"
 end
 end
