@@ -27,7 +27,6 @@ action :nothing
 only_if node['platform_family'] == "debian"
 creates "/etc/apache2/mods-enabled ssl.load"
 end
-end
 
 service "apache2" do
   case node['platform']
