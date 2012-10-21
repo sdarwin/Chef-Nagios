@@ -50,10 +50,16 @@ end
 if node['nagios']['multi_environment_monitoring']
   search(:node, "role:#{node['nagios']['server_role']}") do |n|
    mon_host << n['ipaddress'] unless mon_host.include?(n['ipaddress'])
+   if n['ec2']['public_ipv4']
+      mon_host <<  n['ec2']['public_ipv4'] unless mon_host.include?( n['ec2']['public_ipv4'])
+   end
   end
 else
   search(:node, "role:#{node['nagios']['server_role']} AND chef_environment:#{node.chef_environment}") do |n|
     mon_host << n['ipaddress'] unless mon_host.include?(n['ipaddress'])
+    if n['ec2']['public_ipv4']
+      mon_host <<  n['ec2']['public_ipv4'] unless mon_host.include?( n['ec2']['public_ipv4'])
+    end
   end
 end
 
