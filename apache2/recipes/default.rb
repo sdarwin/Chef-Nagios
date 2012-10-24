@@ -17,14 +17,14 @@ end
 execute "a2enmod-rewrite" do
 command "/usr/sbin/a2enmod rewrite" 
 action :nothing
-only_if node['platform_family'] == "debian"
+only_if {node['platform_family'] == "debian"}
 creates "/etc/apache2/mods-enabled rewrite.load"
 end
 
 execute "a2enmod-ssl" do
 command "/usr/sbin/a2enmod ssl" 
 action :nothing
-only_if node['platform_family'] == "debian"
+only_if {node['platform_family'] == "debian"}
 creates "/etc/apache2/mods-enabled ssl.load"
 end
 
