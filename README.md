@@ -11,4 +11,4 @@ the added bells and whistles on redhat.
 - Added support for amazon
 - Use packages when possible, not source
 - Change RH folder to nagios, not nagios3
-more..
+- more..
