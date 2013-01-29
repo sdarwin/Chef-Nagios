@@ -66,7 +66,7 @@ define service {
 define service {
     service_description SSH
     hostgroup_name      all
-    check_command       check_ssh
+    check_command       check_ssh!22
     use                 default-service
 }
 
