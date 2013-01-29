@@ -21,6 +21,9 @@ define host {
     ip = n['cloud']['public_ipv4']
   elsif !node['cloud'].nil? && n['cloud']['provider'] != node['cloud']['provider']
     ip = n['cloud']['public_ipv4']
+       #S.D. 2013, 2 lines
+  elsif !node['cloud'].nil? && n['ec2']['placement_availability_zone'][0..5] != node['ec2']['placement_availability_zone'][0..5]
+    ip = n['cloud']['public_ipv4']
   else
     ip = n['ipaddress']
   end %>
