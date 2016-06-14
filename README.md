@@ -2,6 +2,8 @@ Chef Nagios
 
 This was a fork of the opscode Nagios recipe 1.2.6. Customized, streamlined and tested for RH5,6 and Ubuntu11,12.
 
+No longer maintained, please refer to Chef Supermarket for latest nagios cookbook.
+
 It looks like some of the bugs fixed here were also addressed in the mainline code which has recently been updated 
 to 1.3.0 and 2.0.0.
 
